@@ -38,11 +38,11 @@ app.get('/get-suggestions', async (req, res) => {
         console.log('Got response from location service');
         const location = locationResponse.data.Location;
 
-        /*
         // Second API call to prompt.com with the location data
-        const promptResponse = await axios.get(`http://prompt.com/prompt?location=${encodeURIComponent(location)}`);
+        const promptResponse = await axios.get(`http://prompt.com/prompt?location=${encodeURIComponent(location)}`, {
+            timeout: 5000  // Timeout after 5 seconds
+        });
         const promptData = promptResponse.data;
-        */
 
         // Filter suggestions based on user preferences (basic filtering for demonstration)
         const userPreferences = Array.isArray(preferences) ? preferences : [preferences];
