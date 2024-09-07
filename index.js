@@ -31,12 +31,12 @@ app.get('/get-suggestions', async (req, res) => {
     try {
         console.log('Calling location service');
 
-        /*
-        // First API call to location.com to get location details
-        const locationResponse = await axios.get(`https://aws-hack-genai-llm.fly.dev/location?lat=${latitude}&lon=${longitude}`);
+        // First API call to location service with a timeout of 5 seconds
+        const locationResponse = await axios.get(`https://aws-hack-genai-llm.fly.dev/location?lat=${latitude}&lon=${longitude}`, {
+            timeout: 5000  // Timeout after 5 seconds
+        });        
         console.log('Got response from location service');
         const location = locationResponse.data.Location;
-        */
 
         /*
         // Second API call to prompt.com with the location data
