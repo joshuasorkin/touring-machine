@@ -43,7 +43,10 @@ app.get('/get-suggestions', async (req, res) => {
         // Second API call to prompt.com with a POST request, sending location in the body
         const nearbyConsumablesResponse = await axios.post(
                 'https://9440-34-81-214-97.ngrok-free.app/getNearbyConsumables',
-                { address: location }, // Send the location as a JSON object in the body
+                { 
+                    address: location,
+                    preferences: preferences
+                }, // Send the location as a JSON object in the body
                 { timeout: 30000 } // Timeout after 5 seconds
         );
 
