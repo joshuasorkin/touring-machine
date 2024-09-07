@@ -40,11 +40,14 @@ app.get('/get-suggestions', async (req, res) => {
 
         console.log({location});
 
-        // Second API call to prompt.com with the location data
-        const promptResponse = await axios.get(`https://df0c-34-142-224-98.ngrok-free.app/getNearbyConsumables?address=${encodeURIComponent(location)}`, {
-            timeout: 5000  // Timeout after 5 seconds
-        });
-        const promptData = promptResponse.data;
+        // Second API call to prompt.com with a POST request, sending location in the body
+        const nearbyConsumablesResponse = await axios.post(
+            'https://df0c-34-142-224-98.ngrok-free.app/getNearbyConsumables',
+            { address: location }, // Send the location as a JSON object in the body
+            { timeout: 5000 } // Timeout after 5 seconds
+        );
+
+        const result = nearbyConsumablesResponse.data.result;
 
         // Filter suggestions based on user preferences (basic filtering for demonstration)
         const userPreferences = Array.isArray(preferences) ? preferences : [preferences];
@@ -54,6 +57,9 @@ app.get('/get-suggestions', async (req, res) => {
 
         // If no preferences match, return all suggestions
         const response = filteredSuggestions.length > 0 ? filteredSuggestions : suggestions;
+
+        const suggestions = response;
+
 
         // Send final response with promptData and suggestions
         res.json({
