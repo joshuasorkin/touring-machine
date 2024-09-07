@@ -2,9 +2,13 @@
 
 import express from 'express';
 import axios from 'axios';
+import cors from 'cors';
 
 const app = express();
 const PORT = 3000;
+
+// Use the CORS middleware
+app.use(cors()); // This will enable CORS for all routes and origins
 
 // Sample data for suggestions
 const suggestions = [
@@ -26,10 +30,13 @@ app.get('/get-suggestions', async (req, res) => {
 
     try {
         console.log('Calling location service');
+
+        /*
         // First API call to location.com to get location details
         const locationResponse = await axios.get(`https://aws-hack-genai-llm.fly.dev/location?lat=${latitude}&lon=${longitude}`);
         console.log('Got response from location service');
         const location = locationResponse.data.Location;
+        */
 
         /*
         // Second API call to prompt.com with the location data
