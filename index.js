@@ -19,9 +19,6 @@ const suggestions_default = [
     { id: 5, suggestion: "Go for a scenic drive.", preferences: ["adventure", "driving"] }
 ];
 
-// If no preferences match, return all suggestions
-const response = filteredSuggestions.length > 0 ? filteredSuggestions : suggestions;
-
 // GET endpoint for suggestions with latitude, longitude, and preferences
 app.get('/get-suggestions', async (req, res) => {
     const { latitude, longitude, preferences = [] } = req.query;
@@ -45,9 +42,9 @@ app.get('/get-suggestions', async (req, res) => {
 
         // Second API call to prompt.com with a POST request, sending location in the body
         const nearbyConsumablesResponse = await axios.post(
-            'https://9440-34-81-214-97.ngrok-free.app/getNearbyConsumables',
-            { address: location }, // Send the location as a JSON object in the body
-            { timeout: 5000 } // Timeout after 5 seconds
+                'https://9440-34-81-214-97.ngrok-free.app/getNearbyConsumables',
+                { address: location }, // Send the location as a JSON object in the body
+                { timeout: 30000 } // Timeout after 5 seconds
         );
 
         const result = nearbyConsumablesResponse.data.result;
@@ -66,10 +63,12 @@ app.get('/get-suggestions', async (req, res) => {
         res.json({
             latitude,
             longitude,
-            suggestions: response
+            suggestions: suggestions_default
         });
     }
 });
+
+
 
 // Start the server
 app.listen(PORT, () => {
