@@ -32,14 +32,16 @@ app.get('/get-suggestions', async (req, res) => {
         console.log('Calling location service');
 
         // First API call to location service with a timeout of 5 seconds
-        const locationResponse = await axios.get(`https://aws-hack-genai-llm.fly.dev/location?lat=${latitude}&lon=${longitude}`, {
+        const locationResponse = await axios.get(`https://b1b9-12-94-132-170.ngrok-free.app/location?lat=${latitude}&lon=${longitude}`, {
             timeout: 5000  // Timeout after 5 seconds
         });        
         console.log('Got response from location service');
         const location = locationResponse.data.Location;
 
+        console.log({location});
+
         // Second API call to prompt.com with the location data
-        const promptResponse = await axios.get(`http://prompt.com/prompt?location=${encodeURIComponent(location)}`, {
+        const promptResponse = await axios.get(`https://df0c-34-142-224-98.ngrok-free.app/getNearbyConsumables?address=${encodeURIComponent(location)}`, {
             timeout: 5000  // Timeout after 5 seconds
         });
         const promptData = promptResponse.data;
@@ -58,7 +60,6 @@ app.get('/get-suggestions', async (req, res) => {
             latitude,
             longitude,
             location,
-            promptData,
             suggestions: response
         });
 
