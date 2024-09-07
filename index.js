@@ -25,13 +25,17 @@ app.get('/get-suggestions', async (req, res) => {
     }
 
     try {
+        console.log('Calling location service');
         // First API call to location.com to get location details
-        const locationResponse = await axios.get(`http://location.com/location?lat=${latitude}&long=${longitude}`);
+        const locationResponse = await axios.get(`https://aws-hack-genai-llm.fly.dev/location?lat=${latitude}&lon=${longitude}`);
+        console.log('Got response from location service');
         const location = locationResponse.data.Location;
 
+        /*
         // Second API call to prompt.com with the location data
         const promptResponse = await axios.get(`http://prompt.com/prompt?location=${encodeURIComponent(location)}`);
         const promptData = promptResponse.data;
+        */
 
         // Filter suggestions based on user preferences (basic filtering for demonstration)
         const userPreferences = Array.isArray(preferences) ? preferences : [preferences];
