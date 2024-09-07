@@ -19,6 +19,15 @@ const suggestions = [
     { id: 5, suggestion: "Go for a scenic drive.", preferences: ["adventure", "driving"] }
 ];
 
+// Filter suggestions based on user preferences (basic filtering for demonstration)
+const userPreferences = Array.isArray(preferences) ? preferences : [preferences];
+const filteredSuggestions = suggestions.filter(suggestion =>
+    userPreferences.some(pref => suggestion.preferences.includes(pref))
+);
+
+// If no preferences match, return all suggestions
+const response = filteredSuggestions.length > 0 ? filteredSuggestions : suggestions;
+
 // GET endpoint for suggestions with latitude, longitude, and preferences
 app.get('/get-suggestions', async (req, res) => {
     const { latitude, longitude, preferences = [] } = req.query;
@@ -49,29 +58,22 @@ app.get('/get-suggestions', async (req, res) => {
 
         const result = nearbyConsumablesResponse.data.result;
 
-        // Filter suggestions based on user preferences (basic filtering for demonstration)
-        const userPreferences = Array.isArray(preferences) ? preferences : [preferences];
-        const filteredSuggestions = suggestions.filter(suggestion =>
-            userPreferences.some(pref => suggestion.preferences.includes(pref))
-        );
-
-        // If no preferences match, return all suggestions
-        const response = filteredSuggestions.length > 0 ? filteredSuggestions : suggestions;
-
-        const suggestions = response;
-
-
         // Send final response with promptData and suggestions
         res.json({
             latitude,
             longitude,
             location,
-            suggestions: response
+            suggestions: result
         });
 
     } catch (error) {
         console.error('Error fetching data:', error);
-        res.status(500).json({ error: 'Failed to fetch location or prompt data' });
+        // Send final response with promptData and suggestions
+        res.json({
+            latitude,
+            longitude,
+            suggestions: response
+        });
     }
 });
 
