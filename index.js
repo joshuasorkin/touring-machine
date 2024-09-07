@@ -11,19 +11,13 @@ const PORT = 3000;
 app.use(cors()); // This will enable CORS for all routes and origins
 
 // Sample data for suggestions
-const suggestions = [
+const suggestions_default = [
     { id: 1, suggestion: "Try exploring the local market.", preferences: ["shopping", "food"] },
     { id: 2, suggestion: "Visit the art museum nearby.", preferences: ["art", "culture"] },
     { id: 3, suggestion: "Check out a popular restaurant in the area.", preferences: ["food", "dining"] },
     { id: 4, suggestion: "Take a walk in the beautiful park.", preferences: ["outdoors", "nature"] },
     { id: 5, suggestion: "Go for a scenic drive.", preferences: ["adventure", "driving"] }
 ];
-
-// Filter suggestions based on user preferences (basic filtering for demonstration)
-const userPreferences = Array.isArray(preferences) ? preferences : [preferences];
-const filteredSuggestions = suggestions.filter(suggestion =>
-    userPreferences.some(pref => suggestion.preferences.includes(pref))
-);
 
 // If no preferences match, return all suggestions
 const response = filteredSuggestions.length > 0 ? filteredSuggestions : suggestions;
@@ -51,7 +45,7 @@ app.get('/get-suggestions', async (req, res) => {
 
         // Second API call to prompt.com with a POST request, sending location in the body
         const nearbyConsumablesResponse = await axios.post(
-            'https://df0c-34-142-224-98.ngrok-free.app/getNearbyConsumables',
+            'https://9440-34-81-214-97.ngrok-free.app/getNearbyConsumables',
             { address: location }, // Send the location as a JSON object in the body
             { timeout: 5000 } // Timeout after 5 seconds
         );
